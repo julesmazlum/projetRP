@@ -12,10 +12,7 @@ class Graphe:
         return (u, v) in self.bloquees
 
     def voisins(self, sommet):
-        return [
-            v for v in self.sommets
-            if v != sommet and (sommet, v) in self.arretes and not self.est_bloquee(sommet, v)
-        ]
+        return [v for v in self.sommets if v != sommet and not self.est_bloquee(sommet, v)]
 
     def cout(self, u, v):
         return self.arretes.get((u, v), float('inf'))
