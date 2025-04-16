@@ -9,7 +9,7 @@ if __name__ == "__main__":
     #graphe.afficher_graphe()
 
     print("\n[CR] Exécution de l'algorithme CR...")
-    resultat_cr = CR(graphe, depart)
+    resultat_cr = CR(graphe, depart, verbose=False)
     print("Itinéraire CR:", resultat_cr)
 
     print("\n[CNN] Exécution de l'algorithme CNN...")
