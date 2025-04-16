@@ -109,7 +109,7 @@ def CR(graphe, depart, verbose=False):
                 # Alors on essaye d'en trouver un entre le sommet suivant et la fin de la boucle
                 if not tentative:
                     tentative = chercher_alternative(
-                        tour, current, sens, graphe, non_visites, start_index=i+1,
+                        tour, current, sens, graphe, non_visites, start_index=i,
                         end_index=tour.index(init), skip_visited=True,
                         next_sommet_original=next_sommet,
                         bloquees_totales=bloquees_totales, verbose=verbose
@@ -158,6 +158,7 @@ def CR(graphe, depart, verbose=False):
         # Si on a pas réussi à atteindre tous les sommets du tour (donc inverser_sens == True), alors on inverse le sens
         if non_visites:
             sens = -1 if inverser_sens else 1
+            #sens *= -1 if inverser_sens else 1
             log(f"Sens: {'anti-horaire' if sens == -1 else 'horaire'}")
             log("—" * 50)
             inverser_sens = False
@@ -186,9 +187,14 @@ def chercher_alternative(tour, current, sens, graphe, non_visites, start_index, 
     log(f"Recherche {f"interne d'alternative depuis {current} vers {next_sommet_original}" if not skip_visited else f"externe d'alternative depuis {current}"}")
 
 
-    for j in range(1, n):
+    for j in range(2, n):
         # Index sommet tentatif
-        tentative_index = (start_index + j * sens) % n
+        # Recherche externe j in range(2,n), car on déjà testé le +1
+        if skip_visited:
+            tentative_index = (start_index + j * sens) % n
+        # Recherche interne j in range(1,n), on veut tester +1
+        else:
+            tentative_index = (start_index + (j-1) * sens) % n 
 
         # Si aucun sommet n'est trouvé
         # - en interne : sommet tentatif == sommet suivant

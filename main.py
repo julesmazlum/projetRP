@@ -1,7 +1,7 @@
 from graphe import Graphe
 from cr import CR
 from cnn import CNN
-from tests.exemples_graphes import exemple_graphe_1
+from tests.exemples_graphes import exemple_graphe_1, exemple_graphe_2
 
 if __name__ == "__main__":
     print("[TEST] Chargement du graphe exemple...")
