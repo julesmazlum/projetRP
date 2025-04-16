@@ -20,23 +20,4 @@ def exemple_graphe_1():
     for u, v in bloquees:
         graphe.bloquer_arrete(u, v)
 
-    return graphe, "v1", bloquees
-
-def exemple_graphe_2():
-    sommets = [f"v{i}" for i in range(1, 5)]
-    arretes = {}
-    for i in range(len(sommets)):
-        for j in range(i + 1, len(sommets)):
-            cout = abs(i - j) + 1
-            arretes[(sommets[i], sommets[j])] = cout
-            arretes[(sommets[j], sommets[i])] = cout
-
-    bloquees = {
-        ("v3", "v4")
-    }
-
-    graphe = Graphe(sommets, arretes)
-    for u, v in bloquees:
-        graphe.bloquer_arrete(u, v)
-
-    return graphe, "v1", bloquees
+    return graphe, "v1"
