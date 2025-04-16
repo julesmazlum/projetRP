@@ -15,7 +15,7 @@ def CR(graphe, depart, verbose=False):
     tour = christofides(graphe, depart)
     log(f"Tour initial généré par Christofides: {tour}")
 
-    # Supression du dernier éléments qui est le départ
+    # Supression du dernier élément qui est le départ
     if tour[-1] == tour[0]:
         tour = tour[:-1]
         log(f"Retrait du retour au point de départ: {tour}")
@@ -28,34 +28,34 @@ def CR(graphe, depart, verbose=False):
     non_visites = set(tour)
     non_visites.remove(depart)
 
-    # Ensembles des arrêtes bloquées
+    # Ensemble des arêtes bloquées
     bloquees_totales = set()
 
     # Le parcours retourné
     parcours_complet = [depart]
 
     # Booleans utiles
-    passe = True
-    b = False
+    retour_ajoute = True
+    inverser_sens = False
 
     # Paramètres de départ
-    # Sommet courrant
+    # Sommet courant
     current = depart
     sens = 1
 
     log(f"Début du routage cyclique depuis {depart}")
     log(f"Sommets à visiter: {non_visites}")
 
-    # Tant qu'il y a des sommets à visiter
+    # Tant qu'il reste des sommets à visiter
     while non_visites:
         # Parcours pour cette iteration
         iteration_path = [current]
         # Sommets visités pour cette iteration
         visited_this_round = set()
-        # Arrête bloquées pour cette itération
+        # arête bloquées pour cette itération
         blocages_cette_iter = set()
 
-        # L'index du sommet courrant
+        # L'index du sommet courant
         i = tour.index(current)
 
         # Le sommet de départ pour l'iteration, pour pouvoir détecter une boucle complète
@@ -83,20 +83,20 @@ def CR(graphe, depart, verbose=False):
             else:
                 log(f"Tentative de passage en {next_sommet}")
 
-            # Si l'arrête entre le sommet courant et le sommet suivant est bloqué, alors on essaye de trouver un shortcut
+            # Si l'arête entre le sommet courant et le sommet suivant est bloqué, alors on essaye de trouver un shortcut
             if graphe.est_bloquee(current, next_sommet):
                 log(f"Blocage détecté entre {current} et {next_sommet}")
                 # Blocage ajouté
                 blocages_cette_iter.add((current, next_sommet))
                 trouve = False
 
-                # Index du sommet courrant
+                # Index du sommet courant
                 start = tour.index(current)
                 # Index du sommet suivant
                 end = tour.index(next_sommet)
                 tentative = None
 
-                # S'il existe des sommets interne entre le sommet courant et le sommet suivant
+                # S'il existe des sommets internes entre le sommet courant et le sommet suivant
                 # Alors on cherche un shortcut parmis ceux la
                 if abs(start - end) > 1:
                     tentative = chercher_alternative(
@@ -106,7 +106,7 @@ def CR(graphe, depart, verbose=False):
                     )
                 # S'il n'existe pas de sommets entre les deux
                 # OU si aucun shortcut n'a été trouvé
-                # Alors on essaye d'en trouvé un entre le sommet suivant et la fin de la boucle
+                # Alors on essaye d'en trouver un entre le sommet suivant et la fin de la boucle
                 if not tentative:
                     tentative = chercher_alternative(
                         tour, current, sens, graphe, non_visites, start_index=i+1,
@@ -115,14 +115,14 @@ def CR(graphe, depart, verbose=False):
                         bloquees_totales=bloquees_totales, verbose=verbose
                     )
 
-                # Si in shortcut a été trouvé, le sommet suivant est le shortcut
+                # Si un shortcut a été trouvé, le sommet suivant est le shortcut
                 if tentative:
                     next_sommet = tentative
                     trouve = True
-                # Sinon 
+                # Sinon on n'a pas pu terminer notre boucle donc, sens opposé
                 else:
                     log("Aucune alternative trouvée. Inversion du sens à la prochaine itération.")
-                    b = True
+                    inverser_sens = True
                     break
 
             # On se déplace au sommet suivant (MAJ des données)
@@ -135,11 +135,11 @@ def CR(graphe, depart, verbose=False):
 
             # Si tous les sommets ont étés visités.
             # Alors on ajoute un dernier sommet qui est le départ (le boolean passe permet de le faire une unique fois)
-            if len(non_visites) == 0 and passe:
+            if len(non_visites) == 0 and retour_ajoute:
                 log("")
                 log(f"Tous les sommets ont été visités. Réajout du départ ({depart}) pour retour.")
                 non_visites.add(depart)
-                passe = False
+                retour_ajoute = False
 
         # Si aucune solution trouvée
         if not visited_this_round:
@@ -155,12 +155,12 @@ def CR(graphe, depart, verbose=False):
         log(f"Arêtes bloquées cumulées : {bloquees_totales}")
         log(f"Sommets restants : {non_visites}")
 
-        # Sens
+        # Si on a pas réussi à atteindre tous les sommets du tour (donc inverser_sens == True), alors on inverse le sens
         if non_visites:
-            sens = -1 if b else 1
+            sens = -1 if inverser_sens else 1
             log(f"Sens: {'anti-horaire' if sens == -1 else 'horaire'}")
             log("—" * 50)
-            b = False
+            inverser_sens = False
 
     # Parcours complet
     log(f"Parcours complet: {parcours_complet}")
@@ -172,7 +172,7 @@ def chercher_alternative(tour, current, sens, graphe, non_visites, start_index, 
                          verbose=False):
     """
     Recherche de sommet alternatif en cas de blocage
-    Parmis sommets internes/ externes
+    Parmi sommets internes/ externes
     """
 
     # Fonction d'affichage avec verbose
@@ -181,7 +181,7 @@ def chercher_alternative(tour, current, sens, graphe, non_visites, start_index, 
             print(f"[CA] {msg}")
     #
 
-    # Donnée
+    # Données
     n = len(tour)
     log(f"Recherche {f"interne d'alternative depuis {current} vers {next_sommet_original}" if not skip_visited else f"externe d'alternative depuis {current}"}")
 
@@ -190,9 +190,9 @@ def chercher_alternative(tour, current, sens, graphe, non_visites, start_index, 
         # Index sommet tentatif
         tentative_index = (start_index + j * sens) % n
 
-        # Si aucun sommet n'a été trouvé
-        # sommet tentatif == sommet suivant en cas de recherche interne
-        # sommet tentatif == sommet de la fin de boucle en cas de recherche externe
+        # Si aucun sommet n'est trouvé
+        # - en interne : sommet tentatif == sommet suivant
+        # - en externe : sommet tentatif == sommet de fin de boucle
         if tentative_index == end_index:
             log("Fin de la recherche atteinte.")
             break
@@ -206,8 +206,8 @@ def chercher_alternative(tour, current, sens, graphe, non_visites, start_index, 
             log(f"{sommet_tentatif} déjà visité (recherche externe).")
             continue
 
-        # Lors d'une recherche interne, si l'arrête entre le sommet tentatif et le sommet suivant est bloqué
-        # Pas la peine de s'y rendre
+        # Lors d'une recherche interne, si l'arête entre le sommet tentatif et le sommet suivant est bloqué
+        # Inutile d'y aller
         if bloquees_totales and (sommet_tentatif, next_sommet_original) in bloquees_totales:
             log(f"{sommet_tentatif} -> {next_sommet_original} déjà testé sans succès.")
             continue
