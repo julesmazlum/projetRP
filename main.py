@@ -1,6 +1,7 @@
 from graphe import Graphe
 from cr import CR
 from cnn import CNN
+from stats import stats
 from tests.exemples_graphes import exemple_graphe_1, exemple_graphe_2
 
 if __name__ == "__main__":
@@ -15,3 +16,6 @@ if __name__ == "__main__":
     print("\n[CNN] Exécution de l'algorithme CNN...")
     resultat_cnn = CNN(graphe, depart)
     print("Itinéraire CNN:", resultat_cnn)
+
+    print("\nQuelques statistiques")
+    stats()

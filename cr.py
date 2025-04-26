@@ -1,6 +1,6 @@
 from christofides import *
 
-def CR(graphe, depart, verbose=False):
+def CR(graphe, depart, verbose=False, known=False):
     """
     Implémentation de l'algorithme CR (Routage Cyclique)
     """
@@ -12,7 +12,7 @@ def CR(graphe, depart, verbose=False):
     #
 
     # Récupération du tour de christofide
-    tour = christofides(graphe, depart)
+    tour = christofides(graphe, depart, known=known)
     log(f"Tour initial généré par Christofides: {tour}")
 
     # Supression du dernier élément qui est le départ
