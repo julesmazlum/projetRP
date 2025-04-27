@@ -184,8 +184,8 @@ def chercher_alternative(tour, current, sens, graphe, non_visites, start_index, 
 
     # Données
     n = len(tour)
-    log(f"Recherche {f"interne d'alternative depuis {current} vers {next_sommet_original}" if not skip_visited else f"externe d'alternative depuis {current}"}")
-
+    texte = f"interne d'alternative depuis {current} vers {next_sommet_original}" if not skip_visited else f"externe d'alternative depuis {current}"
+    log(f"Recherche {texte}")
 
     for j in range(2, n):
         # Index sommet tentatif
