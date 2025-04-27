@@ -1,6 +1,5 @@
 from graphe import Graphe
 
-# n = 16
 def exemple_graphe_1():
     sommets = [f"v{i}" for i in range(1, 17)]
     arretes = {}
@@ -19,34 +18,14 @@ def exemple_graphe_1():
 
     graphe = Graphe(sommets, arretes)
     for u, v in bloquees:
-        graphe.bloquer_arrete(u, v)
+        graphe.block_arrete(u, v)
 
     return graphe, "v1"
 
-def exemple_graphe_1bis():
-    sommets = [f"v{i}" for i in range(1, 17)]
-    arretes = {}
-    for i in range(len(sommets)):
-        for j in range(i + 1, len(sommets)):
-            cout = abs(i - j) + 1
-            arretes[(sommets[i], sommets[j])] = cout
-            arretes[(sommets[j], sommets[i])] = cout
-
-    bloquees = {
-        ("v3", "v4"), ("v9", "v10"), ("v12", "v13"),
-        ("v8", "v10"), ("v13", "v14")
-    }
-
-    graphe = Graphe(sommets, arretes)
-    for u, v in bloquees:
-        graphe.bloquer_arrete(u, v)
-
-    return graphe, "v1"
-
-# n = 30
 def exemple_graphe_2():
-    sommets = [f"v{i}" for i in range(1, 31)]
+    sommets = [f"v{i}" for i in range(1, 10)]
     arretes = {}
+
     for i in range(len(sommets)):
         for j in range(i + 1, len(sommets)):
             cout = abs(i - j) + 1
@@ -54,77 +33,36 @@ def exemple_graphe_2():
             arretes[(sommets[j], sommets[i])] = cout
 
     bloquees = {
-        ("v2", "v3"), ("v3", "v4"), ("v5", "v6"), ("v7", "v8"),
-        ("v10", "v11"), ("v12", "v13"), ("v14", "v15"), ("v17", "v18"),
-        ("v19", "v20"), ("v20", "v21"), ("v22", "v23"), ("v25", "v26"),
-        ("v27", "v28")
+        ("v1", "v2"), ("v2", "v3"), ("v4", "v5"),
+        ("v6", "v7"), ("v7", "v8"), ("v8", "v9")
     }
 
     graphe = Graphe(sommets, arretes)
     for u, v in bloquees:
-        graphe.bloquer_arrete(u, v)
+        graphe.block_arrete(u, v)
 
     return graphe, "v1"
 
 
-def exemple_graphe_2bis():
-    sommets = [f"v{i}" for i in range(1, 31)]
-    arretes = {}
-    for i in range(len(sommets)):
-        for j in range(i + 1, len(sommets)):
-            cout = abs(i - j) + 1
-            arretes[(sommets[i], sommets[j])] = cout
-            arretes[(sommets[j], sommets[i])] = cout
-
-    bloquees = {
-        ("v3", "v4"), ("v10", "v11"), ("v20", "v21")
-    }
-
-    graphe = Graphe(sommets, arretes)
-    for u, v in bloquees:
-        graphe.bloquer_arrete(u, v)
-
-    return graphe, "v1"
-
-# n = 40
 def exemple_graphe_3():
-    sommets = [f"v{i}" for i in range(1, 41)]
-    arretes = {}
-    for i in range(len(sommets)):
-        for j in range(i + 1, len(sommets)):
-            cout = abs(i - j) + 1
-            arretes[(sommets[i], sommets[j])] = cout
-            arretes[(sommets[j], sommets[i])] = cout
-
-    bloquees = {
-        ("v2", "v3"), ("v4", "v5"), ("v6", "v7"), ("v8", "v9"),
-        ("v11", "v12"), ("v13", "v14"), ("v17", "v18"), ("v19", "v20"),
-        ("v22", "v23"), ("v24", "v25"), ("v27", "v28"), ("v30", "v31"),
-        ("v32", "v33"), ("v36", "v37")
+    sommets = ["S", "v1", "v2", "v3", "v4", "t"]
+    arretes = {
+        ("S", "v1"): 2, ("v1", "S"): 2,
+        ("S", "v3"): 2, ("v3", "S"): 2,
+        ("v1", "v3"): 2, ("v3", "v1"): 2,
+        ("v1", "v2"): 2, ("v2", "v1"): 2,
+        ("v3", "v2"): 3, ("v2", "v3"): 3,
+        ("v3", "v4"): 2, ("v4", "v3"): 2,
+        ("v2", "v4"): 3, ("v4", "v2"): 3,
+        ("v2", "t"): 3, ("t", "v2"): 3,
+        ("v4", "t"): 2, ("t", "v4"): 2
     }
+
+    bloquees = {("v3", "v4"), ("v4", "v3")}  # Attention, bloqué dans les deux sens
 
     graphe = Graphe(sommets, arretes)
     for u, v in bloquees:
-        graphe.bloquer_arrete(u, v)
+        graphe.block_arrete(u, v)
 
-    return graphe, "v1"
-
-def exemple_graphe_3bis():
-    sommets = [f"v{i}" for i in range(1, 41)]
-    arretes = {}
-    for i in range(len(sommets)):
-        for j in range(i + 1, len(sommets)):
-            cout = abs(i - j) + 1
-            arretes[(sommets[i], sommets[j])] = cout
-            arretes[(sommets[j], sommets[i])] = cout
-
-    bloquees = {
-        ("v5", "v6"), ("v15", "v16"), ("v25", "v26"), ("v35", "v36")
-    }
-
-    graphe = Graphe(sommets, arretes)
-    for u, v in bloquees:
-        graphe.bloquer_arrete(u, v)
-
-    return graphe, "v1"
+    return graphe, "S"
 

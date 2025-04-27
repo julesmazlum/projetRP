@@ -1,16 +1,10 @@
 import networkx as nx
+import matplotlib.pyplot as plt
 
-def christofides(graphe, depart, known=False):
+def christofides(graphe, depart):
     G = nx.Graph()
-
-    # Si known, on ajoute pas les arrêtes bloquées, elles sont connues à l'avance -> chemin optimal
-    # Sinon, on les ajoute, elles ne sont pas connues à l'avance -> chemin calculé
     for (u, v), cout in graphe.arretes.items():
-        if known:
-            if(u, v) not in graphe.bloquees:
-                G.add_edge(u, v, weight=cout)
-        else:
-            G.add_edge(u, v, weight=cout)
+        G.add_edge(u, v, weight=cout)
 
     # 1. Arbre couvrant de poids minimal
     T = nx.minimum_spanning_tree(G)

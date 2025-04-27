@@ -1,6 +1,6 @@
 from christofides import *
 
-def CR(graphe, depart, verbose=False, known=False):
+def CR(graphe, depart, verbose=False):
     """
     Implémentation de l'algorithme CR (Routage Cyclique)
     """
@@ -12,7 +12,7 @@ def CR(graphe, depart, verbose=False, known=False):
     #
 
     # Récupération du tour de christofide
-    tour = christofides(graphe, depart, known=known)
+    tour = christofides(graphe, depart)
     log(f"Tour initial généré par Christofides: {tour}")
 
     # Supression du dernier élément qui est le départ
@@ -84,7 +84,7 @@ def CR(graphe, depart, verbose=False, known=False):
                 log(f"Tentative de passage en {next_sommet}")
 
             # Si l'arête entre le sommet courant et le sommet suivant est bloqué, alors on essaye de trouver un shortcut
-            if graphe.est_bloquee(current, next_sommet):
+            if graphe.is_blocked(current, next_sommet):
                 log(f"Blocage détecté entre {current} et {next_sommet}")
                 # Blocage ajouté
                 blocages_cette_iter.add((current, next_sommet))
@@ -184,8 +184,8 @@ def chercher_alternative(tour, current, sens, graphe, non_visites, start_index, 
 
     # Données
     n = len(tour)
-    log(f"Recherche {f"interne d'alternative depuis {current} vers {next_sommet_original}" if not skip_visited else f"externe d'alternative depuis {current}"}")
-
+    texte = f"interne d'alternative depuis {current} vers {next_sommet_original}" if not skip_visited else f"externe d'alternative depuis {current}"
+    log(f"Recherche {texte}")
 
     for j in range(2, n):
         # Index sommet tentatif
@@ -219,7 +219,7 @@ def chercher_alternative(tour, current, sens, graphe, non_visites, start_index, 
             continue
 
         # Sommet tentatif possible
-        if not graphe.est_bloquee(current, sommet_tentatif):
+        if not graphe.is_blocked(current, sommet_tentatif):
             log(f"Alternative valide trouvée: {sommet_tentatif}")
             return sommet_tentatif
         # Sinon pas trouvé
