@@ -1,11 +1,12 @@
 from cr import CR
 from cnn import CNN
 import time
-from tests.exemples_graphes import *
+import numpy as np
+from tests.exemples_graphes import * #exemple_graphe_1, exemple_graphe_1bis, exemple_graphe_2, exemple_graphe_2bis, exemple_graphe_3, exemple_graphe_3bis
 
 def mesurer(fonction, graphe, depart):
     temps = []
-    for _ in range(30):
+    for _ in range(50):
         debut = time.perf_counter()
         fonction(graphe, depart, graphe.bloquees.copy())
         fin = time.perf_counter()
