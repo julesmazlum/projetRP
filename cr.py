@@ -1,6 +1,6 @@
 from christofides import *
 
-def CR(graphe, depart, verbose=False):
+def CR(graphe, depart, bloquee, verbose=False, known=False):
     """
     Implémentation de l'algorithme CR (Routage Cyclique)
     """
@@ -12,7 +12,7 @@ def CR(graphe, depart, verbose=False):
     #
 
     # Récupération du tour de christofide
-    tour = christofides(graphe, depart)
+    tour = christofides(graphe, depart, known=known)
     log(f"Tour initial généré par Christofides: {tour}")
 
     # Supression du dernier élément qui est le départ
@@ -184,8 +184,8 @@ def chercher_alternative(tour, current, sens, graphe, non_visites, start_index, 
 
     # Données
     n = len(tour)
-    texte = f"interne d'alternative depuis {current} vers {next_sommet_original}" if not skip_visited else f"externe d'alternative depuis {current}"
-    log(f"Recherche {texte}")
+    log(f"Recherche {f"interne d'alternative depuis {current} vers {next_sommet_original}" if not skip_visited else f"externe d'alternative depuis {current}"}")
+
 
     for j in range(2, n):
         # Index sommet tentatif

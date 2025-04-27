@@ -2,12 +2,12 @@ from graphe import nearest_neighbor, construire_G_prime, dijkstra_connues
 from christofides import christofides
 import networkx as nx
 
-def CNN(graphe, depart, bloquees):
+def CNN(graphe, depart, bloquees, known=False):
     """
     Implémentation de l'algorithme CNN pour le problème CCTP
     """
     # Christofides 
-    tour = christofides(graphe, depart)
+    tour = christofides(graphe, depart, known=known)
     
     if tour[-1] == tour[0]:
         tour = tour[:-1]  #on retire le retour au départ

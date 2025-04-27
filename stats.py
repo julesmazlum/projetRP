@@ -7,13 +7,13 @@ def mesurer(fonction, graphe, depart):
     temps = []
     for _ in range(30):
         debut = time.perf_counter()
-        fonction(graphe, depart, verbose=False)
+        fonction(graphe, depart, graphe.bloquees.copy())
         fin = time.perf_counter()
         temps.append(fin - debut)
     return sum(temps) / len(temps)
 
 def cout(fonction, graphe, depart, known):
-    parcours = fonction(graphe, depart, verbose=False, known=known)
+    parcours = fonction(graphe, depart, graphe.bloquees.copy(), known=known)
     cout_total = 0
 
     for i in range(len(parcours) - 1):
@@ -39,11 +39,8 @@ def stats():
     print("\nTemps...")
     for i, (graphe, depart) in enumerate(graphes, 1):
         moyenne_CR = mesurer(CR, graphe, depart)
-        """
         moyenne_CNN = mesurer(CNN, graphe, depart)
-        print(f"graphe {i} : CR = {moyenne_CR:.6f}s, CNN = {moyenne_CNN:.6f}s")
-        """
-        print(f"graphe {i} ({len(graphe.sommets)} noeuds) : CR = {moyenne_CR:.6f}s")
+        print(f"graphe {i}  ({len(graphe.sommets)} noeuds) : CR = {moyenne_CR:.6f}s, CNN = {moyenne_CNN:.6f}s")
 
     print("\nCout...")
     # Cout
@@ -57,15 +54,12 @@ def stats():
         print("[CR] Coût total du chemin en connaissant les arêtes bloquées:", coutParcoursCRKnown)
         print(f"Ratio CR : {coutParcoursCR/coutParcoursCRKnown:.6f}\n")
 
-        """
         coutParcoursCNN = cout(CNN, graphe, depart, known=False)
         print("[CNN] Coût total du chemin sans connâitre les arêtes bloquées:", coutParcoursCNN)
 
         coutParcoursCNNKnown = cout(CNN, graphe, depart, known=True)
         print("[CNN] Coût total du chemin en connaissant les arêtes bloquées:", coutParcoursCNNKnown)
         print(f"Ratio CNN : {coutParcoursCNN/coutParcoursCNNKnown:.6f}\n")
-        """
-
 
     
 
