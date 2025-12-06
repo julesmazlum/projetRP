@@ -51,3 +51,8 @@ Installez les dépendances via pip :
 
 ```bash
 pip install networkx matplotlib
+```
+
+## Auteurs
+
+* **Jules MAZLUM**
