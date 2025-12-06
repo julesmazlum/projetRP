@@ -56,3 +56,4 @@ pip install networkx matplotlib
 ## Auteurs
 
 * **Jules MAZLUM**
+* **Aurélien CHAMBOLLE-SOLAZ**
